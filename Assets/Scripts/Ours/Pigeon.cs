@@ -9,9 +9,15 @@ public class Pigeon : MonoBehaviour {
 
     Vector3 mPos;
 
-    // Flap force
-    public float force = 300;
+    [Header("Flight settings")]
+    public AnimationCurve forceCurve;
+    public float flapForce = 200;
+    public float flapDuration = .3f;
     public float rotationSpeed = 5f;
+    public float flapVectorAngle = -45f;
+    private Vector3 flapVector;
+    //private float baseGravity = 1f;
+    public float liftCoefficient = 1f;
 
     public int collisionLayer = 0;
 
@@ -27,15 +33,20 @@ public class Pigeon : MonoBehaviour {
         
     }
 
+    //private void calcGlideGravity() {
+    //    float angleOfAttack = Vector2.Dot(GetComponent<Rigidbody2D>().velocity.normalized, Vector2.up);
+    //    Debug.DrawRay(transform.position, GetComponent<Rigidbody2D>().velocity.normalized);
+    //    //Debug.Log(angleOfAttack);
+    //    float gravityMultiplier = 1f - Mathf.Clamp01(angleOfAttack);
+    //    GetComponent<Rigidbody2D>().gravityScale = baseGravity * gravityMultiplier;
+    //    Debug.Log(baseGravity * gravityMultiplier);
+    //}
+
     void Update() {
+        //calcGlideGravity();
         // Flap
         if (Input.GetMouseButtonDown(0))
-			GetComponent<Rigidbody2D>().AddForce(transform.up * force);
-
-        mPos = Input.mousePosition;
-        transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(-90, 90, Mathf.InverseLerp(0, Screen.height, mPos.y)));
-
-
+            Flap();
         // Move to a layer up
         if (Input.GetKeyDown(KeyCode.W) && collisionLayer + 1 < upperBound)
             collisionLayer++;
@@ -43,13 +54,34 @@ public class Pigeon : MonoBehaviour {
         // Move to a layer down 
         if (Input.GetKeyDown(KeyCode.S) && collisionLayer > 0)
             collisionLayer--;
+
+        mPos = Input.mousePosition;
+        transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(-90, 90, Mathf.InverseLerp(0, Screen.height, mPos.y)));
+
+        GetComponent<Rigidbody2D>().AddForce(transform.up * liftCoefficient);
     }
-    //void OnDrawGizmos() {
-    //    Debug.DrawRay(transform.position, transform.up, Color.yellow);
-    //    GUIStyle biggus = new GUIStyle();
-    //    biggus.fontSize = 30;
-    //    biggus.normal.textColor = Color.white;
-    //    Gizmos.color = Color.white;
-    //    Handles.Label(transform.position, mPos.ToString(), biggus);
-    //}
+
+    public void Flap() {
+        flapVector = Quaternion.AngleAxis(flapVectorAngle, Vector3.forward) * transform.up;
+        StartCoroutine(FlapCoroutine(forceCurve));
+    }
+
+    private IEnumerator FlapCoroutine(AnimationCurve forceCurve) {
+        float timer = 0f;
+        float maxForce = flapForce;
+        float currentForce = 0f;
+        while (timer < flapDuration) {
+            currentForce = forceCurve.Evaluate(timer / flapDuration) * maxForce;
+            GetComponent<Rigidbody2D>().AddForce(flapVector * currentForce);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        timer = 0f;
+        while (timer < flapDuration) {
+            currentForce = forceCurve.Evaluate(timer / flapDuration) * maxForce;
+            GetComponent<Rigidbody2D>().AddForce(flapVector * currentForce);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+    }
 }
