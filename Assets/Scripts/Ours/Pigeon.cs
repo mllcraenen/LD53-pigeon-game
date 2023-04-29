@@ -5,10 +5,8 @@ using System.Collections;
 using UnityEditor;
 
 public class Pigeon : MonoBehaviour {
-    // Movement speed
-    public float speed = 2;
-
-    Vector3 mPos;
+    private Vector3 mPos;
+    private Rigidbody2D rb;
 
     [Header("Flight settings")]
     public AnimationCurve forceCurve;
@@ -17,37 +15,39 @@ public class Pigeon : MonoBehaviour {
     public float rotationSpeed = 5f;
     public float flapVectorAngle = -45f;
     private Vector3 flapVector;
-    //private float baseGravity = 1f;
+
+    public float maxSpeed = 5f;
     public float liftCoefficient = 1f;
 
-    public int collisionLayer = 0;
 
+    [Header("Tiling settings")]
+    public int collisionLayer = 0;
     private int upperBound = 0;
     public GameObject grid;
+
+    [Header("Sprite settings")]
+    public Sprite[] sprites;
+    private SpriteRenderer spriteRenderer;
 
 
     // Use this for initialization
     void Start() {
-        // Fly towards the right
-        GetComponent<Rigidbody2D>().velocity = Vector2.right * speed;
+        rb = GetComponent<Rigidbody2D>();
         upperBound = grid.GetComponent<Collision>().layers.Length;
-        
-    }
+        spriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
 
-    //private void calcGlideGravity() {
-    //    float angleOfAttack = Vector2.Dot(GetComponent<Rigidbody2D>().velocity.normalized, Vector2.up);
-    //    Debug.DrawRay(transform.position, GetComponent<Rigidbody2D>().velocity.normalized);
-    //    //Debug.Log(angleOfAttack);
-    //    float gravityMultiplier = 1f - Mathf.Clamp01(angleOfAttack);
-    //    GetComponent<Rigidbody2D>().gravityScale = baseGravity * gravityMultiplier;
-    //    Debug.Log(baseGravity * gravityMultiplier);
-    //}
+    }
 
     void Update() {
         keyInputs();
-
         layerColour();
 
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
+
+        mPos = Input.mousePosition;
+        transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(-90, 90, Mathf.InverseLerp(0, Screen.height, mPos.y)));
+
+        rb.AddForce(transform.up * liftCoefficient);
     }
 
     void keyInputs() {
@@ -61,40 +61,37 @@ public class Pigeon : MonoBehaviour {
         // Move to a layer down 
         if (Input.GetKeyDown(KeyCode.S) && collisionLayer > 0)
             collisionLayer--;
-
-        mPos = Input.mousePosition;
-        transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(-90, 90, Mathf.InverseLerp(0, Screen.height, mPos.y)));
-
-        GetComponent<Rigidbody2D>().AddForce(transform.up * liftCoefficient);
-
     }
 
     void layerColour() {
         Color color = grid.GetComponent<Collision>().layers[collisionLayer].GetComponent<Tilemap>().color;
-        GetComponentInChildren<SpriteRenderer>().color = color;
+        spriteRenderer.color = color;
     }
 
     public void Flap() {
         flapVector = Quaternion.AngleAxis(flapVectorAngle, Vector3.forward) * transform.up;
         StartCoroutine(FlapCoroutine(forceCurve));
+        
     }
 
     private IEnumerator FlapCoroutine(AnimationCurve forceCurve) {
+        spriteRenderer.sprite = sprites[1];
         float timer = 0f;
         float maxForce = flapForce;
         float currentForce = 0f;
         while (timer < flapDuration) {
             currentForce = forceCurve.Evaluate(timer / flapDuration) * maxForce;
-            GetComponent<Rigidbody2D>().AddForce(flapVector * currentForce);
+            rb.AddForce(flapVector * currentForce);
             timer += Time.deltaTime;
             yield return null;
         }
-        timer = 0f;
-        while (timer < flapDuration) {
-            currentForce = forceCurve.Evaluate(timer / flapDuration) * maxForce;
-            GetComponent<Rigidbody2D>().AddForce(flapVector * currentForce);
-            timer += Time.deltaTime;
-            yield return null;
-        }
-    }
+        //timer = 0f;
+		//while (timer < flapDuration) {
+		//	currentForce = forceCurve.Evaluate(timer / flapDuration) * maxForce;
+		//	rb.AddForce(flapVector * currentForce);
+		//	timer += Time.deltaTime;
+		//	yield return null;
+		//}
+        spriteRenderer.sprite = sprites[0];
+	}
 }
