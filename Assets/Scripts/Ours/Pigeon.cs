@@ -13,6 +13,12 @@ public class Pigeon : MonoBehaviour {
     public float force = 300;
     public float rotationSpeed = 5f;
 
+    public int collisionLayer = 0;
+
+    private int upperBound = 0;
+    public GameObject grid;
+
+
     // Use this for initialization
     void Start() {
         // Fly towards the right
