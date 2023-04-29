@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEditor;
@@ -28,9 +29,17 @@ public class Pigeon : MonoBehaviour {
     }
 
     void Update() {
+        keyInputs();
+
+        layerColour();
+
+    }
+
+    void keyInputs() {
         // Flap
-        if (Input.GetMouseButtonDown(0))
-			GetComponent<Rigidbody2D>().AddForce(transform.up * force);
+        if (Input.GetMouseButtonDown(0)) {
+            GetComponent<Rigidbody2D>().AddForce(transform.up * force);
+        }
 
         mPos = Input.mousePosition;
         transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(-90, 90, Mathf.InverseLerp(0, Screen.height, mPos.y)));
@@ -43,6 +52,12 @@ public class Pigeon : MonoBehaviour {
         // Move to a layer down 
         if (Input.GetKeyDown(KeyCode.S) && collisionLayer > 0)
             collisionLayer--;
+
+    }
+
+    void layerColour() {
+        Color color = grid.GetComponent<Collision>().layers[collisionLayer].GetComponent<Tilemap>().color;
+        GetComponentInChildren<SpriteRenderer>().color = color;
     }
     //void OnDrawGizmos() {
     //    Debug.DrawRay(transform.position, transform.up, Color.yellow);
