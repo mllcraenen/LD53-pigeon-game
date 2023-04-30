@@ -39837,6 +39837,16 @@ PrefabInstance:
       objectReference: {fileID: 5652184417493170622}
     - target: {fileID: 7569551615914938781, guid: 7c5af00dc5a662642985df7c38f242d3,
         type: 3}
+      propertyPath: flapForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7569551615914938781, guid: 7c5af00dc5a662642985df7c38f242d3,
+        type: 3}
+      propertyPath: flapVectorAngle
+      value: -45
+      objectReference: {fileID: 0}
+    - target: {fileID: 7569551615914938781, guid: 7c5af00dc5a662642985df7c38f242d3,
+        type: 3}
       propertyPath: scaleCurve.m_Curve.Array.size
       value: 2
       objectReference: {fileID: 0}
