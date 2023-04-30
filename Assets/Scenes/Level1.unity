@@ -153,6 +153,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pigeon: {fileID: 318375893}
+  boidSpawn: {fileID: 318375893}
+  debug: 0
+  boid: {fileID: 8590521513156487796, guid: f4bbe8214564ef343bba271c8a76b376, type: 3}
+  boidCount: 2
   endpoint: {fileID: 842643197}
 --- !u!4 &121461062
 Transform:
@@ -1341,7 +1345,7 @@ GameObject:
   - component: {fileID: 1678311618}
   m_Layer: 0
   m_Name: Level
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
