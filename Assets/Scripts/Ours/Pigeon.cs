@@ -7,6 +7,7 @@ using UnityEditor;
 public class Pigeon : MonoBehaviour {
     private Vector3 mPos;
     private Rigidbody2D rb;
+    private bool isSwitching = false;
 
     [Header("Flight settings")]
     public AnimationCurve forceCurve;
@@ -28,7 +29,14 @@ public class Pigeon : MonoBehaviour {
     [Header("Sprite settings")]
     public Sprite[] sprites;
     private SpriteRenderer spriteRenderer;
+    public AnimationCurve scaleCurve;
+    public AnimationCurve rotationCurve;
 
+    [Header("Scale settings")]
+    public float scaleDuration = .3f;
+    private float scalar = .2f;
+    public float rotateDuration = .3f;
+    public int rotation = 50;
 
     // Use this for initialization
     void Start() {
@@ -55,12 +63,19 @@ public class Pigeon : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
             Flap();
         // Move to a layer up
-        if (Input.GetKeyDown(KeyCode.W) && collisionLayer + 1 < upperBound)
+        if (Input.GetKeyDown(KeyCode.W) && collisionLayer + 1 < upperBound && !isSwitching) {
             collisionLayer++;
+            StartCoroutine(ScaleCoroutine(scaleCurve, true));
+            StartCoroutine(RotateCoroutine(rotationCurve));
+        }
 
         // Move to a layer down 
-        if (Input.GetKeyDown(KeyCode.S) && collisionLayer > 0)
+        if (Input.GetKeyDown(KeyCode.S) && collisionLayer > 0 && !isSwitching) {
             collisionLayer--;
+            StartCoroutine(ScaleCoroutine(scaleCurve, false)); 
+            StartCoroutine(RotateCoroutine(rotationCurve));
+        }
+            
     }
 
     void layerColour() {
@@ -86,12 +101,40 @@ public class Pigeon : MonoBehaviour {
             yield return null;
         }
         //timer = 0f;
-		//while (timer < flapDuration) {
-		//	currentForce = forceCurve.Evaluate(timer / flapDuration) * maxForce;
-		//	rb.AddForce(flapVector * currentForce);
-		//	timer += Time.deltaTime;
-		//	yield return null;
-		//}
+        //while (timer < flapDuration) {
+        //	currentForce = forceCurve.Evaluate(timer / flapDuration) * maxForce;
+        //	rb.AddForce(flapVector * currentForce);
+        //	timer += Time.deltaTime;
+        //	yield return null;
+        //}
         spriteRenderer.sprite = sprites[0];
-	}
+    }
+
+    private IEnumerator ScaleCoroutine(AnimationCurve scaleCurve, bool upscale) {
+        isSwitching = true;
+        Vector3 currentScale = GetComponent<Pigeon>().transform.localScale;
+        float timer = 0f;
+        while (timer < scaleDuration) {
+            if (upscale)
+                GetComponent<Pigeon>().transform.localScale = currentScale + currentScale * scaleCurve.Evaluate(timer / scaleDuration) * scalar;
+            else 
+                GetComponent<Pigeon>().transform.localScale = currentScale - currentScale * scaleCurve.Evaluate(timer / scaleDuration) * (1 - (1 / (1 + scalar)));
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        isSwitching = false;
+    }
+
+    private IEnumerator RotateCoroutine(AnimationCurve rotationCurve) {
+        isSwitching = true;
+        Quaternion currentRotation = GetComponent<Pigeon>().transform.rotation;
+        float timer = 0f;
+        while (timer < rotateDuration) {
+            GetComponent<Pigeon>().transform.rotation = Quaternion.Euler(rotation * rotationCurve.Evaluate(timer / rotateDuration), currentRotation.y, currentRotation.z);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        isSwitching = false;
+    }
 }
