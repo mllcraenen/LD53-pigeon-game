@@ -38561,7 +38561,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5652184416147184571}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -16.73, y: -7.55, z: -9}
+  m_LocalPosition: {x: -11.188591, y: -7.5204463, z: -9}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -39517,7 +39517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad7c2389f09c77c44ac9190932b350cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pigeon: {fileID: 0}
+  pigeon: {fileID: 3818638342216636807}
   boidSpawn: {fileID: 0}
   debug: 0
   boid: {fileID: 0}
@@ -39838,7 +39838,7 @@ PrefabInstance:
     - target: {fileID: 7569551615914938781, guid: 7c5af00dc5a662642985df7c38f242d3,
         type: 3}
       propertyPath: flapForce
-      value: 30
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7569551615914938781, guid: 7c5af00dc5a662642985df7c38f242d3,
         type: 3}
@@ -39948,6 +39948,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6769741754164463642}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3818638342216636807 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7569551615914938781, guid: 7c5af00dc5a662642985df7c38f242d3,
+    type: 3}
+  m_PrefabInstance: {fileID: 6769741754164463642}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3818638342216636805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953c0be0e87120b419465b58b3ad31aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &3818638342216636857 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7569551615914938787, guid: 7c5af00dc5a662642985df7c38f242d3,
