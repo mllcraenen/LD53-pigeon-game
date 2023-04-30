@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 63399185}
   m_Layer: 0
   m_Name: Endpoint
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -504,6 +504,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WindZone (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7606127009208403652, guid: 28fa47f2ead7c0b438b00361e93047ff,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7606127009208403653, guid: 28fa47f2ead7c0b438b00361e93047ff,
         type: 3}
       propertyPath: strength
@@ -580,7 +585,7 @@ GameObject:
   - component: {fileID: 1603444379}
   m_Layer: 0
   m_Name: Background
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -803,7 +808,7 @@ GameObject:
   - component: {fileID: 1640157731}
   m_Layer: 0
   m_Name: Level
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3697,16 +3702,57 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2887348408206156, guid: 2ffb45f600e5f1c479391002a47d9a72, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7837714261772080770, guid: b5a16adba981c8041a8de739a0052b49,
+        type: 3}
     - target: {fileID: 96074174436254179, guid: 2ffb45f600e5f1c479391002a47d9a72,
         type: 3}
       propertyPath: grid
       value: 
       objectReference: {fileID: 647010470}
+    - target: {fileID: 96074174436254179, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: scaleCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 96074174436254179, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: scaleCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 96074174436254179, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: scaleCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168577196972703294, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: m_Name
+      value: LEGBONE
+      objectReference: {fileID: 0}
+    - target: {fileID: 1328970239524137256, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: m_SpriteKey
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949558941998163092, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3433255582235322544, guid: 2ffb45f600e5f1c479391002a47d9a72,
         type: 3}
       propertyPath: m_Name
       value: GameSetup
       objectReference: {fileID: 0}
+    - target: {fileID: 4163606615211074305, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 544209092, guid: 23e610724c601d74a8dec85e63922111,
+        type: 3}
     - target: {fileID: 4214357658247514185, guid: 2ffb45f600e5f1c479391002a47d9a72,
         type: 3}
       propertyPath: m_RootOrder
@@ -3762,16 +3808,68 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5022981878292776924, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 704938660, guid: 23e610724c601d74a8dec85e63922111,
+        type: 3}
+    - target: {fileID: 5097786557543601931, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097786557543601931, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6067002223014292624, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2313712479118200564, guid: b5a16adba981c8041a8de739a0052b49,
+        type: 3}
     - target: {fileID: 7519078321375043553, guid: 2ffb45f600e5f1c479391002a47d9a72,
         type: 3}
       propertyPath: orthographic size
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7519078321375043558, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -16.428873
       objectReference: {fileID: 0}
     - target: {fileID: 7519078321394687027, guid: 2ffb45f600e5f1c479391002a47d9a72,
         type: 3}
       propertyPath: endpoint
       value: 
       objectReference: {fileID: 63399179}
+    - target: {fileID: 7519078322258065181, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -16.428873
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558650079060191925, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: m_Name
+      value: HEADBONE
+      objectReference: {fileID: 0}
+    - target: {fileID: 7772065542471146537, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8868702270745773130, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.237
+      objectReference: {fileID: 0}
+    - target: {fileID: 8868702270745773130, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.605
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ffb45f600e5f1c479391002a47d9a72, type: 3}
 --- !u!1001 &7606127008687553760
@@ -3785,6 +3883,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: WindZone
+      objectReference: {fileID: 0}
+    - target: {fileID: 7606127009208403652, guid: 28fa47f2ead7c0b438b00361e93047ff,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7606127009208403653, guid: 28fa47f2ead7c0b438b00361e93047ff,
         type: 3}

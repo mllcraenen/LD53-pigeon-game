@@ -3,11 +3,14 @@ using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEditor;
+using UnityEngine.U2D.Animation;
 
 public class Pigeon : MonoBehaviour {
     private Vector3 mPos;
     private Rigidbody2D rb;
     private Vector3 wind;
+    private bool isGrounded = false;
+    private bool isFlapping = false;
     private bool isSwitching = false;
 
     [Header("Flight settings")]
@@ -28,12 +31,13 @@ public class Pigeon : MonoBehaviour {
     public GameObject grid;
 
     [Header("Sprite settings")]
-    public Sprite[] sprites;
-    private SpriteRenderer spriteRenderer;
-    public AnimationCurve scaleCurve;
-    public AnimationCurve rotationCurve;
+    private SpriteRenderer[] bodyRenderers;
+    private SpriteResolver bodySpriteResolver;
+    private SpriteResolver letterSpriteResolver;
+    private Transform headTransform;
 
     [Header("Scale settings")]
+    public AnimationCurve scaleCurve;
     private float scaleDuration = .3f;
     private float scalar = .2f;
     private float rotateDuration = .3f;
@@ -43,29 +47,51 @@ public class Pigeon : MonoBehaviour {
     void Start() {
         rb = GetComponent<Rigidbody2D>();
         upperBound = grid.GetComponent<Collision>().layers.Length;
-        spriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
 
+        bodyRenderers = transform.Find("PIGEON_BODIES").gameObject.GetComponentsInChildren<SpriteRenderer>();
+        bodySpriteResolver = transform.Find("PIGEON_BODIES").Find("BODY").gameObject.GetComponent<SpriteResolver>();
+        headTransform = transform.Find("PIGEON_BODIES").Find("HEADBONE");
+        spriteTakeOff();
+        //letterSpriteResolver = transform.Find("PIGEON_BODIES").Find("LETTER").gameObject.GetComponent<SpriteResolver>();
     }
 
     void Update() {
         keyInputs();
         layerColour();
+        rotatePigeon();
 
         // Clamp max speed
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
-
-        Quaternion currentRotation = GetComponent<Pigeon>().transform.rotation;
-
-
-        // Rotate to face mouse
-        mPos = Input.mousePosition;
-        transform.rotation = Quaternion.AngleAxis(Mathf.Lerp(-90, 90, Mathf.InverseLerp(0, Screen.height, mPos.y)), transform.forward);
 
         // Add lift TODO:: Make this not suck
         rb.AddForce(transform.up * liftCoefficient);
 
         // Add wind if present
         rb.AddForce(wind);
+    }
+
+    void rotatePigeon() {
+        if(!isGrounded) {
+            //rotate body to mouse
+            mPos = Input.mousePosition;
+            transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(-90, 90, Mathf.InverseLerp(0, Screen.height, mPos.y)));
+            ////rotate head to right
+            //Vector3 targetVector = transform.position + new Vector3(1f, 0f, 0f);
+            //headTransform.LookAt(targetVector);
+        } 
+        //else {
+        //    //rotate head to mouse
+        //    mPos = Input.mousePosition;
+        //    headTransform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(-90, 90, Mathf.InverseLerp(0, Screen.height, mPos.y)));
+        //}
+
+
+        if (!isFlapping) {
+            if(Vector3.Dot(transform.right, Vector3.down) > 0.3f) {
+                bodySpriteResolver.SetCategoryAndLabel("pigeonBody", "dive");
+
+            } else bodySpriteResolver.SetCategoryAndLabel("pigeonBody", "glide");
+        } 
     }
 
     void keyInputs() {
@@ -101,7 +127,8 @@ public class Pigeon : MonoBehaviour {
     }
 
     private IEnumerator FlapCoroutine(AnimationCurve forceCurve) {
-        spriteRenderer.sprite = sprites[1];
+        isFlapping = true;
+        bodySpriteResolver.SetCategoryAndLabel("pigeonBody", "flap");
         float timer = 0f;
         float maxForce = flapForce;
         float currentForce = 0f;
@@ -111,7 +138,7 @@ public class Pigeon : MonoBehaviour {
             timer += Time.deltaTime;
             yield return null;
         }
-        spriteRenderer.sprite = sprites[0];
+        isFlapping = false;
     }
 
     private IEnumerator ScaleCoroutine(AnimationCurve scaleCurve, bool upscale) {
@@ -128,6 +155,8 @@ public class Pigeon : MonoBehaviour {
             yield return null;
         }
         isSwitching = false;
+        bodySpriteResolver.SetCategoryAndLabel("pigeonBody", "glide");
+        isFlapping = false;
     }
 
     private IEnumerator RotateCoroutine(AnimationCurve rotationCurve) {
@@ -153,5 +182,37 @@ public class Pigeon : MonoBehaviour {
             Wind collidedWind = collision.gameObject.GetComponent<Wind>();
             wind -= collidedWind.transform.right * collidedWind.strength;
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.tag == "Floor") {
+            isGrounded = true;
+            spriteGoSit();
+		}
+    }
+    private void OnCollisionExit2D(Collision2D collision) {
+        if (collision.gameObject.tag == "Floor") {
+            isGrounded = false;
+            spriteTakeOff();
+        }
+    }
+
+    private void spriteGoSit() {
+        foreach (SpriteRenderer i in bodyRenderers) {
+            if (i.gameObject.name == "PIGEON_SIT")
+                i.enabled = true;
+            else i.enabled = false;
+        }
+    }
+    private void spriteTakeOff() {
+        foreach (SpriteRenderer i in bodyRenderers) {
+            if (i.gameObject.name != "PIGEON_SIT")
+                i.enabled = true;
+            else i.enabled = false;
+		}
+	}
+
+	private void OnDrawGizmos() {
+        Debug.DrawRay(transform.position, transform.right, Color.blue);
     }
 }
