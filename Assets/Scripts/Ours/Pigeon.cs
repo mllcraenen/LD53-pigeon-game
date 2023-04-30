@@ -13,6 +13,8 @@ public class Pigeon : MonoBehaviour {
     private bool isFlapping = false;
     private bool isSwitching = false;
 
+    public bool controlsEnabled = true;
+
     [Header("Flight settings")]
     public AnimationCurve forceCurve;
     public float flapForce = 200;
@@ -128,6 +130,7 @@ public class Pigeon : MonoBehaviour {
     }
 
     public void Flap() {
+        PlayerPrefs.SetInt("flaps", PlayerPrefs.GetInt("flaps") + 1);
         flapVector = Quaternion.AngleAxis(flapVectorAngle, Vector3.forward) * transform.up;
         StartCoroutine(FlapCoroutine(forceCurve));
     }

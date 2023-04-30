@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
-    public GameObject pigeon;
+    public Pigeon pigeon;
     public GameObject boidSpawn;
 
     public bool debug = false;
@@ -14,9 +14,11 @@ public class GameController : MonoBehaviour {
     public int boidCount = 100;
 
     public GameObject endpoint;
+
+    public Time time;
     
     void Start() {
-        spawnBoids(boidCount);
+        //spawnBoids(boidCount);
     }
 
     void spawnBoids(int n) {
@@ -33,56 +35,13 @@ public class GameController : MonoBehaviour {
     }
 
     void Update() {
+        
     }
 
     public void OnGoalReached() {
+        pigeon.controlsEnabled = true;
+        PlayerPrefs.SetFloat("timePassed", Time.timeSinceLevelLoad);
+        PlayerPrefs.SetString("level", SceneManager.GetActiveScene().name);
         SceneManager.LoadScene("End");
     }
 }
-
-/*
- * using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-
-public class GameController : MonoBehaviour
-{
-    public GameObject boid;
-    public int boidCount = 100;
-    public Text boidCounterUI;
-    public bool debug = false;
-
-    void Start()
-    {
-        for (int i = 0; i < boidCount; i++) {
-            GameObject obj = Instantiate(boid, new Vector3(Random.Range(-5,5), Random.Range(-5,5)), transform.rotation);
-
-            BoidMovement b = obj.GetComponent<BoidMovement>();
-            //Set last boid as debug boid
-            if (i > boidCount - 2) {
-                b.isDebugBoid = true;
-                b.SetColor(Color.red);
-            }
-        }
-        boidCounterUI.color = Color.gray;
-        boidCounterUI.fontStyle = FontStyle.Bold;
-    }
-
-    void Update()
-    {
-		if (debug) {
-            debugDisplayVisibleBoidCount();
-        }
-    }
-
-    void debugDisplayVisibleBoidCount() {
-        GameObject[] actors = GameObject.FindGameObjectsWithTag("Boid");
-        int count = 0;
-        foreach (GameObject actor in actors) {
-            if (actor.GetComponent<Renderer>().isVisible) count++;
-        }
-
-        boidCounterUI.text = "Visible boids: " + count;
-    }
-}*/

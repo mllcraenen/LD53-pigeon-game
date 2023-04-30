@@ -33,7 +33,6 @@ public class CameraController : MonoBehaviour {
     private Vector3 panMovement;
     private Vector3 pos;
     private Quaternion rot;
-    private bool rotationActive = false;
     private Vector3 lastMousePosition;
     private Quaternion initialRot;
     private float panIncrease = 0.0f;
@@ -42,6 +41,7 @@ public class CameraController : MonoBehaviour {
     [Space]
     public bool rotationEnabled;
     public float rotateSpeed;
+    public bool rotationActive;
 
 
 
