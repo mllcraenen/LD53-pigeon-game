@@ -5,11 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - TutorialRequirement
+  - Wind
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Wind
   - Water
   - UI
   - 
