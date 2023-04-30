@@ -43,8 +43,11 @@ public class Pigeon : MonoBehaviour {
     private float rotateDuration = .3f;
     private float rotation = 30;
 
+
     // Use this for initialization
     void Start() {
+        //flapSource.clip = Resources.Load<AudioClip>(flapClip.name);
+
         rb = GetComponent<Rigidbody2D>();
         upperBound = grid.GetComponent<Collision>().layers.Length;
 
@@ -96,13 +99,16 @@ public class Pigeon : MonoBehaviour {
 
     void keyInputs() {
         // Flap
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)) {
             Flap();
+            GetComponents<AudioSource>()[0].Play();
+        }
         // Move to a layer up
         if (Input.GetKeyDown(KeyCode.W) && collisionLayer + 1 < upperBound && !isSwitching) {
+            GetComponents<AudioSource>()[1].Play();
             collisionLayer++;
             foreach (SpriteRenderer i in bodyRenderers) {
-                i.sortingOrder = collisionLayer;
+                i.sortingOrder = collisionLayer + 1;
             }
             StartCoroutine(ScaleCoroutine(scaleCurve, true));
             //StartCoroutine(RotateCoroutine(rotationCurve));
@@ -110,9 +116,10 @@ public class Pigeon : MonoBehaviour {
 
         // Move to a layer down 
         if (Input.GetKeyDown(KeyCode.S) && collisionLayer > 0 && !isSwitching) {
+            GetComponents<AudioSource>()[2].Play();
             collisionLayer--;
             foreach (SpriteRenderer i in bodyRenderers) {
-                i.sortingOrder = collisionLayer;
+                i.sortingOrder = collisionLayer + 1;
             }
             StartCoroutine(ScaleCoroutine(scaleCurve, false));
             //StartCoroutine(RotateCoroutine(rotationCurve));
