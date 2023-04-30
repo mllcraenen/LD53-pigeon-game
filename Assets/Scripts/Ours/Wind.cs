@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class Wind : MonoBehaviour {
 	public float strength = 5f;
+	private ParticleSystem ps;
+
+	public void Start() {
+		ps = GetComponentInChildren<ParticleSystem>();
+		var main = ps.main;
+		main.simulationSpeed = strength;
+	}
+
 #if UNITY_EDITOR
 	private void OnDrawGizmos() {
         string path = "wind\\wind.png";
