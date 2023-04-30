@@ -34,10 +34,10 @@ public class Pigeon : MonoBehaviour {
     public AnimationCurve rotationCurve;
 
     [Header("Scale settings")]
-    public float scaleDuration = .3f;
+    private float scaleDuration = .3f;
     private float scalar = .2f;
-    public float rotateDuration = .3f;
-    public int rotation = 50;
+    private float rotateDuration = .3f;
+    private float rotation = 30;
 
     // Use this for initialization
     void Start() {
@@ -54,9 +54,12 @@ public class Pigeon : MonoBehaviour {
         // Clamp max speed
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
 
+        Quaternion currentRotation = GetComponent<Pigeon>().transform.rotation;
+
+
         // Rotate to face mouse
         mPos = Input.mousePosition;
-        transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(-90, 90, Mathf.InverseLerp(0, Screen.height, mPos.y)));
+        transform.rotation = Quaternion.AngleAxis(Mathf.Lerp(-90, 90, Mathf.InverseLerp(0, Screen.height, mPos.y)), transform.forward);
 
         // Add lift TODO:: Make this not suck
         rb.AddForce(transform.up * liftCoefficient);
@@ -73,14 +76,14 @@ public class Pigeon : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.W) && collisionLayer + 1 < upperBound && !isSwitching) {
             collisionLayer++;
             StartCoroutine(ScaleCoroutine(scaleCurve, true));
-            StartCoroutine(RotateCoroutine(rotationCurve));
+            //StartCoroutine(RotateCoroutine(rotationCurve));
         }
 
         // Move to a layer down 
         if (Input.GetKeyDown(KeyCode.S) && collisionLayer > 0 && !isSwitching) {
             collisionLayer--;
-            StartCoroutine(ScaleCoroutine(scaleCurve, false)); 
-            StartCoroutine(RotateCoroutine(rotationCurve));
+            StartCoroutine(ScaleCoroutine(scaleCurve, false));
+            //StartCoroutine(RotateCoroutine(rotationCurve));
         }
             
     }
@@ -127,16 +130,15 @@ public class Pigeon : MonoBehaviour {
 
     private IEnumerator RotateCoroutine(AnimationCurve rotationCurve) {
         isSwitching = true;
-        Quaternion currentRotation = GetComponent<Pigeon>().transform.rotation;
         float timer = 0f;
         while (timer < rotateDuration) {
-            GetComponent<Pigeon>().transform.rotation = Quaternion.Euler(rotation * rotationCurve.Evaluate(timer / rotateDuration), currentRotation.y, currentRotation.z);
+            transform.rotation = Quaternion.AngleAxis(rotation * rotationCurve.Evaluate(timer / rotateDuration), transform.right);
             timer += Time.deltaTime;
             yield return null;
         }
         isSwitching = false;
     }
-	}
+	
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if(collision.gameObject.tag == "Wind") {
