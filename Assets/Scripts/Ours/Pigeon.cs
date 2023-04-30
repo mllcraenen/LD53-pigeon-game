@@ -11,6 +11,7 @@ public class Pigeon : MonoBehaviour {
     private Vector3 wind;
     private bool isGrounded = false;
     private bool isFlapping = false;
+    private bool isSwitching = false;
 
     [Header("Flight settings")]
     public AnimationCurve forceCurve;
@@ -30,13 +31,17 @@ public class Pigeon : MonoBehaviour {
     public GameObject grid;
 
     [Header("Sprite settings")]
-    public Sprite[] sprites;
     private SpriteRenderer[] bodyRenderers;
     private SpriteResolver bodySpriteResolver;
     private SpriteResolver letterSpriteResolver;
     private Transform headTransform;
 
-
+    [Header("Scale settings")]
+    public AnimationCurve scaleCurve;
+    private float scaleDuration = .3f;
+    private float scalar = .2f;
+    private float rotateDuration = .3f;
+    private float rotation = 30;
 
     // Use this for initialization
     void Start() {
@@ -94,12 +99,19 @@ public class Pigeon : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
             Flap();
         // Move to a layer up
-        if (Input.GetKeyDown(KeyCode.W) && collisionLayer + 1 < upperBound)
+        if (Input.GetKeyDown(KeyCode.W) && collisionLayer + 1 < upperBound && !isSwitching) {
             collisionLayer++;
+            StartCoroutine(ScaleCoroutine(scaleCurve, true));
+            //StartCoroutine(RotateCoroutine(rotationCurve));
+        }
 
         // Move to a layer down 
-        if (Input.GetKeyDown(KeyCode.S) && collisionLayer > 0)
+        if (Input.GetKeyDown(KeyCode.S) && collisionLayer > 0 && !isSwitching) {
             collisionLayer--;
+            StartCoroutine(ScaleCoroutine(scaleCurve, false));
+            //StartCoroutine(RotateCoroutine(rotationCurve));
+        }
+            
     }
 
     void layerColour() {
@@ -124,9 +136,38 @@ public class Pigeon : MonoBehaviour {
             timer += Time.deltaTime;
             yield return null;
         }
+        isFlapping = false;
+    }
+
+    private IEnumerator ScaleCoroutine(AnimationCurve scaleCurve, bool upscale) {
+        isSwitching = true;
+        Vector3 currentScale = GetComponent<Pigeon>().transform.localScale;
+        float timer = 0f;
+        while (timer < scaleDuration) {
+            if (upscale)
+                GetComponent<Pigeon>().transform.localScale = currentScale + currentScale * scaleCurve.Evaluate(timer / scaleDuration) * scalar;
+            else 
+                GetComponent<Pigeon>().transform.localScale = currentScale - currentScale * scaleCurve.Evaluate(timer / scaleDuration) * (1 - (1 / (1 + scalar)));
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        isSwitching = false;
         bodySpriteResolver.SetCategoryAndLabel("pigeonBody", "glide");
         isFlapping = false;
     }
+
+    private IEnumerator RotateCoroutine(AnimationCurve rotationCurve) {
+        isSwitching = true;
+        float timer = 0f;
+        while (timer < rotateDuration) {
+            transform.rotation = Quaternion.AngleAxis(rotation * rotationCurve.Evaluate(timer / rotateDuration), transform.right);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        isSwitching = false;
+    }
+	
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if(collision.gameObject.tag == "Wind") {

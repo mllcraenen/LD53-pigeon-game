@@ -3712,6 +3712,21 @@ PrefabInstance:
       propertyPath: grid
       value: 
       objectReference: {fileID: 647010470}
+    - target: {fileID: 96074174436254179, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: scaleCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 96074174436254179, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: scaleCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 96074174436254179, guid: 2ffb45f600e5f1c479391002a47d9a72,
+        type: 3}
+      propertyPath: scaleCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1168577196972703294, guid: 2ffb45f600e5f1c479391002a47d9a72,
         type: 3}
       propertyPath: m_Name
