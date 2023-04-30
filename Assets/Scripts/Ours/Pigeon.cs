@@ -101,7 +101,9 @@ public class Pigeon : MonoBehaviour {
         // Move to a layer up
         if (Input.GetKeyDown(KeyCode.W) && collisionLayer + 1 < upperBound && !isSwitching) {
             collisionLayer++;
-            GetComponentInChildren<SpriteRenderer>().sortingOrder = collisionLayer;
+            foreach (SpriteRenderer i in bodyRenderers) {
+                i.sortingOrder = collisionLayer;
+            }
             StartCoroutine(ScaleCoroutine(scaleCurve, true));
             //StartCoroutine(RotateCoroutine(rotationCurve));
         }
@@ -109,7 +111,9 @@ public class Pigeon : MonoBehaviour {
         // Move to a layer down 
         if (Input.GetKeyDown(KeyCode.S) && collisionLayer > 0 && !isSwitching) {
             collisionLayer--;
-            GetComponentInChildren<SpriteRenderer>().sortingOrder = collisionLayer;
+            foreach (SpriteRenderer i in bodyRenderers) {
+                i.sortingOrder = collisionLayer;
+            }
             StartCoroutine(ScaleCoroutine(scaleCurve, false));
             //StartCoroutine(RotateCoroutine(rotationCurve));
         }
@@ -118,7 +122,9 @@ public class Pigeon : MonoBehaviour {
 
     void layerColour() {
         Color color = grid.GetComponent<Collision>().layers[collisionLayer].GetComponent<Tilemap>().color;
-        spriteRenderer.color = Color.Lerp(color, Color.white, 0.8f);
+       foreach (SpriteRenderer i in bodyRenderers) {
+            i.color = Color.Lerp(color, Color.white, 0.8f);
+        }
     }
 
     public void Flap() {
