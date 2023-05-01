@@ -276,17 +276,17 @@ public class BoidMovement : MonoBehaviour {
 
 	private void OnDrawGizmos() {
 		if (isDebugBoid == true) {
-			//Draw the vision arc
-			Handles.color = new Color(.5f, .5f, .5f, .1f);
-			Handles.DrawSolidArc(transform.position, transform.forward, transform.up, settingsFile.visionAngle, settingsFile.visionRange);
-			Handles.DrawSolidArc(transform.position, -transform.forward, transform.up, settingsFile.visionAngle, settingsFile.visionRange);
+			////Draw the vision arc
+			//Handles.color = new Color(.5f, .5f, .5f, .1f);
+			//Handles.DrawSolidArc(transform.position, transform.forward, transform.up, settingsFile.visionAngle, settingsFile.visionRange);
+			//Handles.DrawSolidArc(transform.position, -transform.forward, transform.up, settingsFile.visionAngle, settingsFile.visionRange);
 
-			Handles.color = Color.blue;
-			Handles.DrawLine(transform.position, transform.position + gizmoMovement);
-			Handles.color = Color.red;
-			Handles.DrawLine(transform.position, transform.position + gizmoForward);
-			Handles.color = Color.green;
-			Handles.DrawLine(transform.position, transform.position + gizmoCollisionAvoid);
+			//Handles.color = Color.blue;
+			//Handles.DrawLine(transform.position, transform.position + gizmoMovement);
+			//Handles.color = Color.red;
+			//Handles.DrawLine(transform.position, transform.position + gizmoForward);
+			//Handles.color = Color.green;
+			//Handles.DrawLine(transform.position, transform.position + gizmoCollisionAvoid);
 		}
 
 	}
