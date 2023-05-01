@@ -172,6 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 953c0be0e87120b419465b58b3ad31aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controlsEnabled: 1
   forceCurve:
     serializedVersion: 2
     m_Curve:
@@ -205,7 +206,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  flapForce: 10
+  flapForce: 30
   flapDuration: 0.16
   rotationSpeed: 5
   flapVectorAngle: -35
