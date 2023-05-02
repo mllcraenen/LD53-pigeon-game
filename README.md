@@ -15,4 +15,4 @@ Post It! is a game about a carrier pigeon delivering letters around the city. Fe
 ### Credits:
 - Programming: [Marijn](github.com/mllcraenen) & [Gregor](github.com/GregorFC)
 - Art: SCUM
-- Music: Jeffrey
+- Music: Fryware
